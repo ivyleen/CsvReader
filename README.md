@@ -13,3 +13,13 @@ g++ --std=c++17 main.cpp -o csvReader
 
 To display available options:
 ./csvReader text.txt h
+
+
+Example output:
+
+$ g++ --std=c++17 main.cpp -o csvReader
+
+$ ./csvReader text.txt m
+Option 'm': print_t the maximum of all columns.
+Column1      Column2      Column3
+    9           4           8
