@@ -8,19 +8,41 @@
 #include <algorithm>
 
 
+uint64_t calculateMaxOfColumn(const std::vector<uint64_t> &vec)
+{
+	// C++11 and higher - using operator<.
+	return *std::max_element(vec.begin(), vec.end());
+}
+
 void printColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
 {
 }
 
-void print_tSumOfAllColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
+void printSumOfAllColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
 {
 }
 
-void print_tTheMaximumOfAllColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
+void printTheMaximumOfAllColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
 {
+	// Do nothing with an empty table...
+	if (columns.begin() == columns.end()) { return; }
+
+	for (const auto &pair : columns)
+	{
+		std::cout << std::left << std::setw(12) << pair.first << " ";
+	}
+
+	std::cout << std::endl;
+
+	for (const auto &pair : columns)
+	{
+		std::cout << std::right << std::setw(5) << calculateMaxOfColumn(pair.second) << std::setw(7) << " ";
+	}
+
+	std::cout << "\n\n";
 }
 
-void print_tSumOfAllRows(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
+void printSumOfAllRows(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
 {
 }
 
@@ -115,23 +137,23 @@ int main(int argc, char *argv[])
 		switch (*argv[argc - 1])
 		{
 			case 'p':
-				std::cout << "Option 'p': print_t the contents of all columns." << std::endl;
+				std::cout << "Option 'p': print the contents of all columns." << std::endl;
 				printColumns(columns);
 				break;
 
 			case '+':
-				std::cout << "Option '+': print_t the sum of all columns." << std::endl;
-				print_tSumOfAllColumns(columns);
+				std::cout << "Option '+': print the sum of all columns." << std::endl;
+				printSumOfAllColumns(columns);
 				break;
 
 			case 'm':
-				std::cout << "Option 'm': print_t the maximum of all columns." << std::endl;
-				print_tTheMaximumOfAllColumns(columns);
+				std::cout << "Option 'm': print the maximum of all columns." << std::endl;
+				printTheMaximumOfAllColumns(columns);
 				break;
 
 			case 'a':
-				std::cout << "Option 'a': add each row together and print_t a single column containing the result." << std::endl;
-				print_tSumOfAllRows(columns);
+				std::cout << "Option 'a': add each row together and print a single column containing the result." << std::endl;
+				printSumOfAllRows(columns);
 				break;
 
 			default:
