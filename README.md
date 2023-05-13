@@ -19,6 +19,14 @@ Example output:
 
 $ g++ --std=c++17 main.cpp -o csvReader
 
+$ ./csvReader text.txt h
+You've asked for help. Available options are:
+'p': print the contents of all columns
+'+': print the sum of all columns
+'m' : print the maximum of all columns
+'a' : add each row together and print a single column containing the result.
+'h' : display available options
+
 $ ./csvReader text.txt m
 
 Option 'm': print_t the maximum of all columns.
