@@ -14,15 +14,41 @@ uint64_t calculateMaxOfColumn(const std::vector<uint64_t> &vec)
 	return *std::max_element(vec.begin(), vec.end());
 }
 
+uint64_t calculateSum(const std::vector<uint64_t> &vec)
+{
+	// C++11 and higher - using operator+ under the hood from left to right, initial value - 0
+	return std::accumulate(vec.begin(), vec.end(), 0);
+
+	// C++17 and higher - doesn't guarantee any order, initial value to the default constructed value of the underlying type
+	//return std::reduce(vec.begin(), vec.end());
+}
+
+
 void printColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
 {
 }
 
-void printSumOfAllColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
+void printSumOfEachColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
 {
+	// Do nothing with an empty table...
+	if (columns.begin() == columns.end()) { return; }
+
+	for (const auto &pair : columns)
+	{
+		std::cout << std::left << std::setw(12) << pair.first << " ";
+	}
+
+	std::cout << std::endl;
+
+	for (const auto &pair : columns)
+	{
+		std::cout << std::right << std::setw(5) << calculateSum(pair.second) << std::setw(7) << " ";
+	}
+	
+	std::cout << "\n\n";
 }
 
-void printTheMaximumOfAllColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
+void printTheMaximumOfEachColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
 {
 	// Do nothing with an empty table...
 	if (columns.begin() == columns.end()) { return; }
@@ -143,12 +169,12 @@ int main(int argc, char *argv[])
 
 			case '+':
 				std::cout << "Option '+': print the sum of all columns." << std::endl;
-				printSumOfAllColumns(columns);
+				printSumOfEachColumns(columns);
 				break;
 
 			case 'm':
 				std::cout << "Option 'm': print the maximum of all columns." << std::endl;
-				printTheMaximumOfAllColumns(columns);
+				printTheMaximumOfEachColumns(columns);
 				break;
 
 			case 'a':
