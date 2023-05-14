@@ -28,6 +28,7 @@ You've asked for help. Available options are:
 $ ./csvReader text.txt p
 Option 'p': print the contents of all columns.
 Column1      Column2      Column3
+
     7           3           1
     4           3           8
     9           4           1
@@ -36,16 +37,19 @@ Column1      Column2      Column3
 $ ./csvReader text.txt +
 Option '+': print the sum of all columns.
 Column1      Column2      Column3
+
    21          11          11
 
 $ ./csvReader text.txt m
 Option 'm': print the maximum of all columns.
 Column1      Column2      Column3
+
     9           4           8
 
 $ ./csvReader text.txt a
 Option 'a': add each row together and print a single column containing the result.
 Sum of each row
+
      11
      15
      14
