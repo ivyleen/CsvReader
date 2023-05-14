@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
 				// Add the current uint64_teger to the 'colIdx' column's values vector.
 				columns.at(colIdx).second.push_back(val);
 
-				// If the next token is a comma, ignore it and move on.
+				// If the next character is a blank space, ignore it and move on.
 				if (ss.peek() == ' ') ss.ignore();
 
 				// Increment the column index.
