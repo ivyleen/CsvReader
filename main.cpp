@@ -1,7 +1,10 @@
 #include <iostream>
 #include <fstream>
+#include <stdio.h>
 #include <vector>
 #include <numeric>
+#include <map>
+#include <algorithm>
 #include <string>
 #include <sstream> // std::stringstream
 #include <iomanip> // std::setprecision
@@ -14,17 +17,28 @@ uint64_t calculateMaxOfColumn(const std::vector<uint64_t> &vec)
 	return *std::max_element(vec.begin(), vec.end());
 }
 
+
 uint64_t calculateSum(const std::vector<uint64_t> &vec)
 {
 	// C++11 and higher - using operator+ under the hood from left to right, initial value - 0
-	return std::accumulate(vec.begin(), vec.end(), 0);
+	//return std::accumulate(vec.begin(), vec.end(), 0);
 
 	// C++17 and higher - doesn't guarantee any order, initial value to the default constructed value of the underlying type
-	//return std::reduce(vec.begin(), vec.end());
+	return std::reduce(vec.begin(), vec.end());
+}
+
+void printVector(const std::vector<uint64_t> &vec)
+{
+	for (const auto &el : vec)
+	{
+		std::cout << el << std::setw(7) << " ";
+	}
+
+	std::cout << std::endl;
 }
 
 
-void printColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
+void printColumns(std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
 {
 	// Do nothing with an empty table...
 	if (columns.begin() == columns.end()) { return; }
@@ -38,8 +52,6 @@ void printColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>
 
 	uint64_t rows = columns.at(0).second.size();
 
-	int count = 0;
-
 	std::vector<uint64_t> temp;
 	for (const auto &pair : columns)
 	{
@@ -50,10 +62,10 @@ void printColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>
 	}
 
 	// For every <rows> number of rows...
-	for (int row = 0; row < rows; ++row)
+	for (uint64_t row = 0; row < rows; ++row)
 	{
 		// ... print the correct value of the vector.
-		for (int index = row; index < temp.size(); index += rows)
+		for (uint64_t index = row; index < temp.size(); index += rows)
 		{
 			std::cout << std::right << std::setw(5) << temp[index] << std::setw(7) << " ";
 		}
@@ -61,7 +73,7 @@ void printColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>
 	}
 }
 
-void printSumOfEachColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
+void printSumOfAllColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
 {
 	// Do nothing with an empty table...
 	if (columns.begin() == columns.end()) { return; }
@@ -77,11 +89,11 @@ void printSumOfEachColumns(const std::vector<std::pair<std::string, std::vector<
 	{
 		std::cout << std::right << std::setw(5) << calculateSum(pair.second) << std::setw(7) << " ";
 	}
-	
+
 	std::cout << "\n\n";
 }
 
-void printTheMaximumOfEachColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
+void printTheMaximumOfAllColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
 {
 	// Do nothing with an empty table...
 	if (columns.begin() == columns.end()) { return; }
@@ -103,7 +115,34 @@ void printTheMaximumOfEachColumns(const std::vector<std::pair<std::string, std::
 
 void printSumOfAllRows(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
 {
+	std::cout << "Sum of each row";
+
+	uint64_t rows = columns.at(0).second.size();
+
+	std::vector<uint64_t> temp;
+	for (const auto &pair : columns)
+	{
+		for (const auto &el : pair.second)
+		{
+			temp.push_back(el);
+		}
+	}
+
+	uint64_t sum = 0;
+
+	// For every <rows> number of rows.
+	for (uint64_t row = 0; row < rows; ++row)
+	{
+		// Print the sum of each row.
+		for (uint64_t index = row; index < temp.size(); index += rows)
+		{
+			sum += temp[index];
+		}
+		std::cout << "\n" << std::right << std::setw(7) << sum;
+		sum = 0;
+	}
 }
+
 
 int main(int argc, char *argv[])
 {
@@ -169,7 +208,7 @@ int main(int argc, char *argv[])
 		}
 
 		// Get all the values in the columns.
-		uint64_t val = 0;
+		int val = 0;
 		// For each line..
 		while (std::getline(file, line))
 		{
@@ -177,15 +216,15 @@ int main(int argc, char *argv[])
 			std::stringstream ss(line);
 
 			// Keep track of the current column index.
-			uint64_t colIdx = 0;
+			int colIdx = 0;
 
-			// Extract each uint64_teger.
+			// Extract each integer.
 			while (ss >> val)
 			{
-				// Add the current uint64_teger to the 'colIdx' column's values vector.
+				// Add the current integer to the 'colIdx' column's values vector.
 				columns.at(colIdx).second.push_back(val);
 
-				// If the next character is a blank space, ignore it and move on.
+				// If the next token is a comma, ignore it and move on.
 				if (ss.peek() == ' ') ss.ignore();
 
 				// Increment the column index.
@@ -202,12 +241,12 @@ int main(int argc, char *argv[])
 
 			case '+':
 				std::cout << "Option '+': print the sum of all columns." << std::endl;
-				printSumOfEachColumns(columns);
+				printSumOfAllColumns(columns);
 				break;
 
 			case 'm':
 				std::cout << "Option 'm': print the maximum of all columns." << std::endl;
-				printTheMaximumOfEachColumns(columns);
+				printTheMaximumOfAllColumns(columns);
 				break;
 
 			case 'a':
@@ -225,3 +264,4 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
+
