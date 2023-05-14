@@ -26,6 +26,39 @@ uint64_t calculateSum(const std::vector<uint64_t> &vec)
 
 void printColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
 {
+	// Do nothing with an empty table...
+	if (columns.begin() == columns.end()) { return; }
+
+	for (const auto &pair : columns)
+	{
+		std::cout << std::left << std::setw(12) << pair.first << " ";
+	}
+
+	std::cout << std::endl;
+
+	uint64_t rows = columns.at(0).second.size();
+
+	int count = 0;
+
+	std::vector<uint64_t> temp;
+	for (const auto &pair : columns)
+	{
+		for (const auto &el : pair.second)
+		{
+			temp.push_back(el);
+		}
+	}
+
+	// For every <rows> number of rows...
+	for (int row = 0; row < rows; ++row)
+	{
+		// ... print the correct value of the vector.
+		for (int index = row; index < temp.size(); index += rows)
+		{
+			std::cout << std::right << std::setw(5) << temp[index] << std::setw(7) << " ";
+		}
+		std::cout << "\n";
+	}
 }
 
 void printSumOfEachColumns(const std::vector<std::pair<std::string, std::vector<uint64_t>>> &columns)
