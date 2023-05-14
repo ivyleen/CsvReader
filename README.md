@@ -38,7 +38,7 @@ $ ./csvReader text.txt +
 Option '+': print the sum of all columns.
 Column1      Column2      Column3
 
-   21          11          11
+    21          11          11
 
 $ ./csvReader text.txt m
 Option 'm': print the maximum of all columns.
